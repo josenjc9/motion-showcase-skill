@@ -1,0 +1,42 @@
+<!doctype html><meta charset="utf-8"><title>datatest</title><link rel="stylesheet" href="lib/ms.css"><div id="box"></div><pre id="out"></pre>
+<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets-all.js"></script><script src="lib/names.js"></script><script src="lib/ms.js"></script>
+<script>
+// 數據檢查：每個「可接數據」的元件，傳入獨特的值，畫面 HTML 裡一定要出現那個值；不傳時要能正常顯示。
+const bad=[];let n=0;
+const strip=h=>h.replace(/<[^>]+>/g,' ');
+const probe={ // 每個欄位傳入的值，檢查是否出現（用文字或數字都可）
+ counter:{value:731,prefix:'#',unit:'次'},'live-score':{home:'AAA',away:'BBB',homeScore:17,awayScore:23,period:'PPP',status:'SSS'},
+ 'heart-rate':{value:187,unit:'UUU'},'jump-arc':{title:'TTT',badge:'BBB',from:'FFF',to:'OOO'},'video-countdown':{value:'9:59'},
+ 'order-progress':{title:'TTT',eta:'EEE',steps:['甲','乙','丙'],current:1,prefix:'PPP'},call:{name:'NNN',avatar:'AAA',time:'9:41'},
+ 'battery-percent':{value:73},'music-player':{title:'TTT',sub:'SSS'},'run-pace':{label:'LLL',time:'7:77',distance:9.87,unit:'UUU',heart:177},
+ 'water-level':{value:37,unit:'UUU'},'burst-forecast':{title:'TTT',percent:88},'cook-timer':{title:'TTT',seconds:754,_want:'12:34'},
+ breathing:{round:3,rounds:9,time:'8:88'},timecode:{seconds:7322,_want:'02:02:02'},'chat-input':{name:'NNN',text:'你好世界',typing:false},
+ 'render-ring':{value:44,label:'LLL'},'mixer-eq':{title:'TTT',levels:[1,1,1,1,1,1,1,1,1,1,1,1]},
+ 'trend-line':{title:'TTT',value:321,series:[1,9,2,8,3]},'settings-toggles':{items:[{label:'AAA',on:true},{label:'BBB',on:false}]},
+ 'big-stat':{value:555,label:'LLL'},'duration-pill':{value:'9h 9m'},'progress-ring':{value:55,label:'LLL'},'frame-count':{value:4321,label:'LLL'}};
+MS.list().forEach(c=>{
+  try{n++;const h0=MS.render(c.id,0.5);if(h0.length<50)bad.push(c.id+' 預設畫面空白')}catch(e){bad.push(c.id+' 預設出錯 '+e.message)}
+  if(!c.dataReady)return;
+  const p=probe[c.id];if(!p){bad.push(c.id+' 沒有測試值');return}
+  Object.keys(p).forEach(k=>{
+    if(k==='_want')return;
+    if(!(k in c.fields)){bad.push(c.id+' 欄位 '+k+' 沒在 fields 裡登記');return}
+    try{n++;const v=p[k];const h=strip(MS.render(c.id,0.5,Object.assign({},p.typing===false?{typing:false}:{},{[k]:v})));
+      const want=(p._want&&k==='seconds')?p._want:(Array.isArray(v)?null:(typeof v==='number'?String(v):v));
+      if(k==='levels'||k==='series'||k==='steps'||k==='items'||k==='current'||k==='typing'){return}
+      if(!h.includes(String(want).replace(/^#/,'')))bad.push(c.id+'.'+k+' 傳 '+want+' 畫面沒出現');
+    }catch(e){bad.push(c.id+'.'+k+' 出錯 '+e.message)}
+  });
+  // 清單類欄位：換不同的值，輸出要不同
+  ['levels','series','steps','items','current'].forEach(k=>{if(!p[k])return;n++;const a=MS.render(c.id,0.5,{[k]:p[k]}),b=MS.render(c.id,0.5);if(a===b)bad.push(c.id+'.'+k+' 傳值後畫面沒變')});
+  if(c.id==='order-progress'){n++;const h=strip(MS.render(c.id,0.5,{steps:['甲','乙','丙'],current:1}));if(!h.includes('乙'))bad.push('order-progress 步驟名稱沒出現')}
+  if(c.id==='settings-toggles'){n++;const h=strip(MS.render(c.id,0.5,{items:[{label:'AAA',on:true}]}));if(!h.includes('AAA'))bad.push('toggles 標籤沒出現')}
+});
+// mount／update：掛進頁面、換數據、數字要平順過渡到新值
+const holder=document.getElementById('box');const m=MS.mount(holder,'heart-rate',{value:60},{duration:200});
+n++;if(!holder.textContent.includes('60'))bad.push('mount 沒顯示初始數據 60');
+n++;if(MS._mix(60,120,.5)!==90)bad.push('數字過渡計算不對');if(JSON.stringify(MS._mix([0,10],[10,20],.5))!=='[5,15]')bad.push('清單過渡計算不對');
+m.update({value:120},{animate:false});
+setTimeout(()=>{n++;const txt=holder.textContent;if(!txt.includes('120'))bad.push('update 後沒到 120：'+txt);m.destroy();
+ document.getElementById('out').textContent='CHECKED '+n+'\n'+bad.join('\n')+'\nRESULT: '+(bad.length?'FAIL':'PASS')},700);
+</script>

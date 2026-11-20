@@ -1,0 +1,6 @@
+/* motion-showcase 元件樣式：放進網頁或影片頁都要載入。所有規則限定在 .ms-root 內，不會影響你的頁面。 */
+.ms-root{position:relative;overflow:visible;font-family:-apple-system,"SF Pro Display","PingFang TC","Noto Sans TC",sans-serif}
+.ms-root .ms-stage{position:absolute;left:0;top:0;transform-origin:0 0}
+.ms-root div,.ms-root img,.ms-root svg{position:absolute}
+.ms-root .wg>div,.ms-root .wg div{position:absolute}
+.ms-root .wg>div:first-child{position:relative}

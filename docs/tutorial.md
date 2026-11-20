@@ -1,48 +1,67 @@
 # 教學
 
-## 1. 安裝
-```sh
-git clone https://github.com/josenjc9/motion-showcase-skill ~/.claude/skills/motion-showcase
+## 1. 放進網站
+把整個 `lib/` 放進你的專案，網頁裡這樣載入（順序不能換）：
+
+```html
+<link rel="stylesheet" href="lib/ms.css">
+<script src="lib/widgets.js"></script>
+<script src="lib/widgets2.js"></script>
+<script src="lib/widgets3.js"></script>
+<script src="lib/widgets-all.js"></script>
+<script src="lib/names.js"></script>
+<script src="lib/ms.js"></script>
 ```
-重開 Claude Code 就會抓到，不用裝其他東西。
+`ms.css` 的樣式都限定在元件裡面，不會動到你頁面其他地方。
 
-## 2. 先看有什麼
-- 圖：看 README 的元件圖。
-- 名稱與編號：看 `catalog.md`。
-- 看效果動起來：雙擊 `gallery.html`。
-- 想停在某個瞬間：用瀏覽器開 `demo.html?type=enter&i=0&t=0.25`，改 `t`（秒）看不同瞬間。
-
-`type` 可以填：`enter`（進場）、`break`（破壞）、`arrange`（排列）、`camera`（鏡頭）、`transition`（轉場）、`widget`（元件）。
-
-## 3. 跟 AI 說要什麼
-用白話講就好：
-
-> 用 motion-showcase 做一段 6 秒的直式展示：先用「3D 彈出」帶出「心率」元件，接「方塊爆破」拆掉，再用 ink 轉場切到「番茄鐘」。
-
-講清楚：幾秒、哪幾招、順序、哪個元件。不確定就說「挑一個像計時器的元件」，AI 會去目錄找。
-
-## 4. 輸出成影片
-需要先裝好：
-- Google Chrome（或 Chromium）
-- ffmpeg（macOS：`brew install ffmpeg`；Linux：`sudo apt install ffmpeg`）
-
-不需要 Python。macOS、Linux 都能跑，Windows 沒測。
-
-直接跑現成範例，輸出 4 秒影片（心率彈出 → 方塊爆破 → 墨水轉場切到番茄鐘）：
-```sh
-sh examples/render.sh
+## 2. 掛上元件
+```html
+<div id="heart" style="width:260px"></div>
+<script>
+  const hr = MS.mount('#heart', 'heart-rate', { value: 88 });
+</script>
 ```
-約 1 到 2 分鐘，完成後影片在 `examples/out.mp4`。成品長相看 [docs/sample-three-segments.mp4](sample-three-segments.mp4)。
+- 第一個參數：放元件的方塊（選擇器或元素）。元件會自動縮放成方塊的寬度。
+- 第二個參數：元件名字，中文（`'心率'`）或英文 id（`'heart-rate'`）都可以。
+- 第三個參數：數據。不傳就用示範數字。
 
-想改成自己的組合：打開 `examples/three-segments.html`，裡面三段各一行，換掉元件編號或效果名稱就行（編號對照看 `catalog.md`），再跑一次 `sh examples/render.sh`。
+## 3. 接數據
+```js
+hr.update({ value: 120 });                  // 數字會平順過渡
+hr.update({ value: 60 }, { animate: false }); // 不要過渡，直接跳
+```
+- 數字（和數字清單，例如折線的每個點）會平順變過去，文字直接換。
+- 每個元件能傳哪些欄位：看 [catalog.md](../catalog.md)，每個欄位都有說明和範例。
+- 不傳的欄位維持原本的值。
 
-原理：一格一格截圖，再用 ffmpeg 合成影片。
+### 接真實的資料（範例）
+```js
+const score = MS.mount('#score', 'live-score', { home: '藍隊', away: '紅隊' });
+const ws = new WebSocket('wss://你的伺服器');
+ws.onmessage = e => {
+  const d = JSON.parse(e.data);
+  score.update({ homeScore: d.home, awayScore: d.away, period: d.period });
+};
+```
+接 API 也一樣：拿到資料就呼叫 `update`。
 
-## 5. 小提醒
-- 前後兩段別用同一個效果，會單調。
-- 進場、破壞大約 0.38 秒演完，想慢一點就把時間拉長。
-- 不要在效果裡加計時或亂數，不然每次輸出會不一樣。
+## 4. 其他方法
+- `MS.list()`：列出全部元件、尺寸、能傳的欄位。
+- `hr.pause()` / `hr.play()`：暫停、繼續。
+- `hr.destroy()`：移除元件。
+- `MS.render('heart-rate', 1.5, { value: 88 })`：回傳第 1.5 秒的畫面（HTML 文字），給截圖、做影片或伺服器端用。
 
-## 6. 卡住時
-- 畫面全空白：多半是編號填超過範圍。
-- 想確認每個效果都正常：開 `selftest.html`，最後一行是 `RESULT: PASS` 就沒問題。
+## 5. 哪些元件能接數據
+- 24 個可接：看 `catalog.md` 的第一部分。
+- 其他 48 個：能放進網頁播放，但內容是固定的，還不能傳數據。傳了也不會變。
+
+## 6. 進場、破壞、轉場等效果
+這些是「元件出現、被拆掉、切換」的動作，目前用來做展示和影片，雙擊 `gallery.html` 看每一種。
+
+## 7. 檢查
+- `selftest.html`：最後一行 `RESULT: PASS` 表示每個元件與效果都能顯示。
+- `datatest.html`：最後一行 `RESULT: PASS` 表示 24 個元件傳進去的值都會顯示出來。
+
+## 8. 卡住時
+- 畫面是空的：確認 `ms.css` 有載入、script 順序正確。
+- 找不到元件：用 `MS.list()` 看名字。

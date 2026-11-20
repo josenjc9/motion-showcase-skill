@@ -1,0 +1,57 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>接數據範例</title>
+<link rel="stylesheet" href="../lib/ms.css">
+<style>
+:root{color-scheme:light dark}
+body{margin:0;font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;background:#f4f1ea;color:#222}
+@media (prefers-color-scheme:dark){body{background:#161514;color:#eee}}
+main{max-width:980px;margin:auto;padding:24px 16px 60px}
+h1{font-size:24px;margin:0 0 6px}p{opacity:.7;margin:0 0 18px;line-height:1.6}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;align-items:start;margin-bottom:26px}
+.box{display:flex;flex-direction:column;gap:8px}
+.box label{font-size:14px;opacity:.8;display:flex;gap:8px;align-items:center}
+.box input[type=range]{flex:1}
+code{background:#0001;padding:1px 6px;border-radius:5px}
+pre{background:#0001;padding:12px 14px;border-radius:10px;overflow:auto;font-size:13px;line-height:1.6}
+button{font:inherit;padding:8px 14px;border-radius:10px;border:0;background:#2b7bff;color:#fff;cursor:pointer}
+</style>
+<main>
+<h1>元件接數據：實際範例</h1>
+<p>下面每個元件都掛在普通網頁裡。拖拉滑桿、按按鈕，元件會平順變成新數字；右邊「模擬即時資料」那組是程式每 2 秒自己送新數據進去。</p>
+
+<div class="row">
+  <div class="box"><div id="hr"></div><label>心率 <input id="hrIn" type="range" min="50" max="190" value="88"><b id="hrV">88</b></label></div>
+  <div class="box"><div id="score"></div><label>主隊得分 <input id="hs" type="range" min="0" max="30" value="2"><b id="hsV">2</b></label><label>客隊得分 <input id="as" type="range" min="0" max="30" value="1"><b id="asV">1</b></label></div>
+  <div class="box"><div id="ring"></div><label>完成度 <input id="rg" type="range" min="0" max="100" value="26"><b id="rgV">26</b></label></div>
+</div>
+<div class="row">
+  <div class="box"><div id="steps"></div><button id="next">下一步</button></div>
+  <div class="box"><div id="line"></div><p>模擬即時資料：每 2 秒進一筆新數字，折線與大數字一起更新。</p></div>
+  <div class="box"><div id="tog"></div><button id="flip">切換第一個開關</button></div>
+</div>
+
+<h2 style="font-size:18px">程式碼</h2>
+<pre>&lt;link rel="stylesheet" href="lib/ms.css"&gt;
+&lt;script src="lib/widgets.js"&gt;&lt;/script&gt;  &lt;!-- widgets2.js、widgets3.js、widgets-all.js、names.js、ms.js 依序載入 --&gt;
+
+const hr = MS.mount('#hr', 'heart-rate', { value: 88 });
+hr.update({ value: 120 });   // 數字會平順過渡到 120
+</pre>
+</main>
+<script src="../lib/widgets.js"></script><script src="../lib/widgets2.js"></script><script src="../lib/widgets3.js"></script><script src="../lib/widgets-all.js"></script><script src="../lib/names.js"></script><script src="../lib/ms.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const hr=MS.mount('#hr','heart-rate',{value:88});
+const score=MS.mount('#score','live-score',{home:'藍隊',away:'紅隊',homeScore:2,awayScore:1,period:'第 3 節'});
+const ring=MS.mount('#ring','render-ring',{value:26,label:'上傳中'});
+const steps=MS.mount('#steps','order-progress',{title:'訂單 #3081',eta:'12 分',steps:['接單','備料','配送','送達'],current:1,prefix:'目前：'});
+const series=[12,15,13,18,17,22,20,26];
+const line=MS.mount('#line','trend-line',{title:'今日訂單',value:26,series});
+const tog=MS.mount('#tog','settings-toggles',{items:[{label:'通知',on:true},{label:'自動儲存',on:false},{label:'深色模式',on:true}]});
+const bind=(inp,val,fn)=>$(inp).addEventListener('input',e=>{$(val).textContent=e.target.value;fn(+e.target.value)});
+bind('hrIn','hrV',v=>hr.update({value:v}));
+bind('hs','hsV',v=>score.update({homeScore:v}));bind('as','asV',v=>score.update({awayScore:v}));
+bind('rg','rgV',v=>ring.update({value:v}));
+let cur=1;$('next').onclick=()=>{cur=(cur+1)%4;steps.update({current:cur})};
+let on0=true;$('flip').onclick=()=>{on0=!on0;tog.update({items:[{label:'通知',on:on0},{label:'自動儲存',on:false},{label:'深色模式',on:true}]})};
+setInterval(()=>{series.push(Math.round(series[series.length-1]+(Math.random()*8-3)));if(series.length>12)series.shift();line.update({series:[...series],value:series[series.length-1]},{animate:false})},2000);
+</script>

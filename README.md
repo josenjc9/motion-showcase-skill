@@ -5,6 +5,7 @@
 裝好之後，跟 AI 說「用 motion-showcase 做一段……」，它會幫你挑效果、預覽、輸出。
 
 怎麼裝、怎麼用：[docs/tutorial.md](docs/tutorial.md)
+成品範例（4 秒、三段串接）：[docs/sample-three-segments.mp4](docs/sample-three-segments.mp4)
 
 ## 先看效果
 下載後雙擊 **`gallery.html`**，所有效果都會自己動，每個下面都有名字，不用裝任何東西。
@@ -44,10 +45,11 @@
 |---|---|
 | `lib/` | 所有效果的程式 |
 | `gallery.html` | 全部效果展示頁（雙擊開） |
+| `examples/` | 三段串接範例與一鍵輸出影片 |
 | `demo.html` | 預覽單一效果（進階） |
 | `catalog.md` | 全部效果與編號 |
 | `selftest.html` | 檢查每個效果都能正常顯示 |
 
-只在 Chrome 測過。不含音效與配樂。
+只在 Chrome 測過，輸出影片需要 Chrome 與 ffmpeg（macOS、Linux）。不含音效與配樂。
 
 授權：MIT

@@ -23,5 +23,6 @@ window.renderAt=(type,i,t,k=1)=>{
   document.getElementById('st').innerHTML=html;
 };
 const q=new URLSearchParams(location.search);
+if(!q.has('type'))location.replace('gallery.html');
 if(q.has('type'))renderAt(q.get('type'),+(q.get('i')||0),+(q.get('t')||0.2),+(q.get('k')||1));
 </script>

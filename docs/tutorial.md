@@ -22,20 +22,21 @@ git clone https://github.com/josenjc9/motion-showcase-skill ~/.claude/skills/mot
 講清楚：幾秒、哪幾招、順序、哪個元件。不確定就說「挑一個像計時器的元件」，AI 會去目錄找。
 
 ## 4. 輸出成影片
-需要 Google Chrome 和 ffmpeg（`brew install ffmpeg`）。以 30fps、6 秒為例：
+需要先裝好：
+- Google Chrome（或 Chromium）
+- ffmpeg（macOS：`brew install ffmpeg`；Linux：`sudo apt install ffmpeg`）
 
+不需要 Python。macOS、Linux 都能跑，Windows 沒測。
+
+直接跑現成範例，輸出 4 秒影片（心率彈出 → 方塊爆破 → 墨水轉場切到番茄鐘）：
 ```sh
-cd ~/.claude/skills/motion-showcase
-mkdir -p out
-for f in $(seq 0 179); do
-  t=$(python3 -c "print($f/30)")
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars \
-    --window-size=1080,1920 --virtual-time-budget=2000 \
-    --screenshot=out/f_$(printf %04d $f).png "file://$PWD/demo.html?type=break&i=1&t=$t"
-done
-ffmpeg -framerate 30 -i out/f_%04d.png -pix_fmt yuv420p out.mp4
+sh examples/render.sh
 ```
-這是一格一格截圖再合成影片。要把多個效果接成一支片，就是每一格算出現在是第幾秒，挑對應的效果去截。
+約 1 到 2 分鐘，完成後影片在 `examples/out.mp4`。成品長相看 [docs/sample-three-segments.mp4](sample-three-segments.mp4)。
+
+想改成自己的組合：打開 `examples/three-segments.html`，裡面三段各一行，換掉元件編號或效果名稱就行（編號對照看 `catalog.md`），再跑一次 `sh examples/render.sh`。
+
+原理：一格一格截圖，再用 ffmpeg 合成影片。
 
 ## 5. 小提醒
 - 前後兩段別用同一個效果，會單調。

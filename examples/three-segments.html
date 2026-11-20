@@ -1,0 +1,30 @@
+<!doctype html><meta charset="utf-8"><title>三段範例</title>
+<style>
+html,body{margin:0;background:#0b0b0c}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:-apple-system,"PingFang TC",sans-serif;background:#efe9dd}
+#st div,#st img,#st svg{position:absolute}
+#st .wg>div,#st .wg div{position:absolute}
+#st .wg>div:first-child{position:relative}
+</style>
+<div id="st"></div>
+<script src="../lib/widgets.js"></script><script src="../lib/widgets2.js"></script><script src="../lib/widgets3.js"></script><script src="../lib/widgets-all.js"></script><script src="../lib/motion.js"></script>
+<script>
+// 4 秒、三段：「3D 彈出」心率 → 「方塊爆破」拆掉 → ink 轉場切到番茄鐘
+// 用法：three-segments.html?t=1.2 （t 是第幾秒，0 到 4）
+const HEART=2, POMODORO=71;
+function draw(t){
+  GT=t;html='';
+  if(t<1.0){                       // 第 1 段：心率彈出（0 到 1 秒）
+    cream();P(ENTER[0][1](HEART,t,c01(t/.38)));
+  }else if(t<2.0){                 // 第 2 段：停一下再被方塊爆破拆掉（1 到 2 秒）
+    cream();const u=t-1.0,C=one(HEART,t);
+    P(u<.4?C:BREAK[1][1](C,c01((u-.4)/.5),HEART,t));
+  }else{                           // 第 3 段：ink 轉場切到番茄鐘（2 到 4 秒）
+    const p=c01((t-2.0)/.8);
+    const A=cap(()=>{cream()}),B=cap(()=>{cream();P(wg(POMODORO,t,{x:WX,y:WY,w:760}))});
+    P(TRX.ink(A,B,p));
+  }
+  document.getElementById('st').innerHTML=html;
+}
+const t=+(new URLSearchParams(location.search).get('t')||0);draw(t);
+</script>

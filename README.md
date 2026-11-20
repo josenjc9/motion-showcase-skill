@@ -11,52 +11,45 @@
 2. 用瀏覽器直接開檔案預覽，不需要安裝任何東西：
    - `demo.html?type=break&i=1&t=0.3` → 方塊爆破的某一瞬間
    - `demo.html?type=widget&i=30&t=1` → 第 30 號動態元件在第 1 秒
-3. 想看整類招式的總覽圖：`sheet.html?type=enter&ts=0.1,0.25`
+3. 想看整類招式的總覽圖：`sheet.html?type=break&ts=0.1,0.25`（元件用 `type=widget`）
 
 ---
 
 ## 一、進場（8 種）
-元件怎麼「出現」：彈出、翻牌、落下、旋轉縮放、對焦、擦除、圓形遮罩、殘影。每招約 0.38 秒走完，每格圖是同一招的兩個時間點。
-
-![進場](docs/img/enter.png)
-
+元件怎麼「出現」。每招約 0.38 秒走完。
+3D 彈出、翻牌進場、彈跳落下、旋轉縮放、對焦浮現、擦除揭露、圓形遮罩、殘影滑入。
 呼叫：`demo.html?type=enter&i=<編號>&t=<秒>&k=<用哪個元件>`
 
 ## 二、破壞特效（8 種）
-元件怎麼「被拆掉」：玻璃碎裂、方塊爆破、像素崩壞、時間切片、撕開畫面、扯畫面、RGB 色散、粒子溶解。
-
-![破壞](docs/img/break.png)
-
+元件怎麼「被拆掉」。
+玻璃碎裂、方塊爆破、像素崩壞、時間切片、撕開畫面、扯畫面、RGB 色散、粒子溶解。
 呼叫：`demo.html?type=break&i=<編號>&t=<秒>&k=<元件>`
 
 ## 三、排列（3 種）
 多個元件怎麼「站位」：堆疊展開、卡片洗牌、元件轉盤。
-
-![排列](docs/img/arrange.png)
+呼叫：`demo.html?type=arrange&i=<編號>&t=<秒>`
 
 ## 四、鏡頭運動（4 種）
 整個畫面怎麼「動」：拉焦、荷蘭角推近、無限套娃、俯拍旋轉。
-
-![鏡頭](docs/img/camera.png)
+呼叫：`demo.html?type=camera&i=<編號>&t=<秒>`
 
 ## 五、轉場（9 種）
-兩個畫面怎麼「切換」：ink、blinds、vblinds、whip、punch、glitch、flash、iris、rgb。每格是同一個轉場進度 25%、50%、75%。
-
-![轉場](docs/img/transition.png)
-
+兩個畫面怎麼「切換」：ink（墨水擴散）、blinds（橫百葉）、vblinds（直百葉）、whip（甩鏡）、punch（衝擊放大）、glitch（故障位移）、flash（閃白）、iris（圓形擴張）、rgb（色散切換）。
 呼叫：`demo.html?type=transition&i=<編號>&t=<0 到 1 的進度>`
+
+> 編號對照在 [catalog.md](catalog.md)。
 
 ## 六、動態元件（72 個）＋材質元件（24 個）
 可以單獨用，也是上面所有招式作用的對象。
 
-**#0–23 基礎元件**
-![元件 0-23](docs/img/widget-a.png)
+**基礎元件（24）**
+![基礎元件](docs/img/widget-a.png)
 
-**#24–47 生活與工具類**
-![元件 24-47](docs/img/widget-b.png)
+**生活與工具類（24）**
+![生活與工具類](docs/img/widget-b.png)
 
-**#48–71 進階類**
-![元件 48-71](docs/img/widget-c.png)
+**進階類（24）**
+![進階類](docs/img/widget-c.png)
 
 **材質元件 0–23**（物理機械感：光圈、夾具、拉鍊、稜鏡等）
 ![材質元件](docs/img/material.png)

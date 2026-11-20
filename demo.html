@@ -1,0 +1,27 @@
+<!doctype html><meta charset="utf-8"><title>motion-showcase demo</title>
+<style>
+html,body{margin:0;background:#0b0b0c}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:-apple-system,"SF Pro Display","PingFang TC",sans-serif;background:#efe9dd}
+#st div,#st img,#st svg{position:absolute}
+#st .wg>div,#st .wg div{position:absolute}
+#st .wg>div:first-child{position:relative}
+</style>
+<div id="st"></div>
+<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets4.js"></script><script src="lib/widgets-all.js"></script>
+<script src="lib/motion.js"></script>
+<script>
+// URL 參數：?type=enter|break|arrange|camera|transition|widget&i=第幾個&t=秒&k=用哪個元件
+// 例：demo.html?type=enter&i=0&t=0.25
+window.renderAt=(type,i,t,k=1)=>{
+  GT=t;html='';
+  if(type==='widget'){cream();P(wg(i,t,{x:WX,y:WY,w:760}))}
+  else if(type==='enter'){cream();P(ENTER[i][1](k,t,c01(t/.38)))}
+  else if(type==='break'){cream();const C=one(k,0);P(BREAK[i][1](C,c01(t/.38),k,t))}
+  else if(type==='arrange'){cream();ARR[i][1](t)}
+  else if(type==='camera'){cream();CAMS[i][1](t)}
+  else if(type==='transition'){const n=Object.keys(TRX)[i];const A=cap(()=>{cream();P(wg(1,t,{x:WX,y:WY,w:760}))}),B=cap(()=>{cream();P(wg(9,t,{x:WX,y:WY,w:760}))});P(TRX[n](A,B,c01(t)))}
+  document.getElementById('st').innerHTML=html;
+};
+const q=new URLSearchParams(location.search);
+if(q.has('type'))renderAt(q.get('type'),+(q.get('i')||0),+(q.get('t')||0.2),+(q.get('k')||1));
+</script>

@@ -1,5 +1,5 @@
 <!doctype html><meta charset="utf-8"><title>selftest</title><div id="st"></div><pre id="out"></pre>
-<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets4.js"></script><script src="lib/widgets-all.js"></script><script src="lib/motion.js"></script>
+<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets-all.js"></script><script src="lib/motion.js"></script>
 <script>
 // 自我檢查：每一招各渲 3 個時間點，不能丟例外、不能是空字串。結果寫在 #out，最後一行 RESULT: PASS/FAIL
 const bad=[];let n=0;
@@ -10,6 +10,5 @@ BREAK.forEach((x,i)=>run('break'+i,t=>{P(x[1](one(1,0),c01(t/.38),1,t))}));
 ARR.forEach((x,i)=>run('arrange'+i,t=>x[1](t)));
 CAMS.forEach((x,i)=>run('camera'+i,t=>x[1](t)));
 Object.keys(TRX).forEach(k=>run('trans_'+k,t=>{const A=cap(()=>P(wg(1,0,{x:WX,y:WY,w:760}))),B=cap(()=>P(wg(9,0,{x:WX,y:WY,w:760})));P(TRX[k](A,B,c01(t)))}));
-(window.WALL4||[]).forEach((x,i)=>run('mat'+i,t=>{P(x[0](t))}));
 document.getElementById('out').textContent='CHECKED '+n+'\n'+bad.join('\n')+'\nRESULT: '+(bad.length?'FAIL':'PASS');
 </script>

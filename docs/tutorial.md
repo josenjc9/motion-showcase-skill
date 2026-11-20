@@ -9,7 +9,8 @@ git clone https://github.com/josenjc9/motion-showcase-skill ~/.claude/skills/mot
 ## 2. 先看有什麼
 - 圖：看 README 的元件圖。
 - 名稱與編號：看 `catalog.md`。
-- 看某個效果動起來：用瀏覽器開 `demo.html?type=enter&i=0&t=0.25`，改 `t`（秒）看不同瞬間。
+- 看效果動起來：雙擊 `gallery.html`。
+- 想停在某個瞬間：用瀏覽器開 `demo.html?type=enter&i=0&t=0.25`，改 `t`（秒）看不同瞬間。
 
 `type` 可以填：`enter`（進場）、`break`（破壞）、`arrange`（排列）、`camera`（鏡頭）、`transition`（轉場）、`widget`（元件）。
 

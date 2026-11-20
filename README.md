@@ -39,16 +39,16 @@
 可以單獨用，也能搭配上面的效果。
 
 **基礎元件（24）**
-![基礎元件](docs/img/widget-a.png)
+![基礎元件](docs/img/widgets-basic-v2.png)
 
 **生活與工具類（24）**
-![生活與工具類](docs/img/widget-b.png)
+![生活與工具類](docs/img/widgets-daily-v2.png)
 
 **進階類（24）**
-![進階類](docs/img/widget-c.png)
+![進階類](docs/img/widgets-advanced-v2.png)
 
 **材質元件（24）**（有機械感的小裝置）
-![材質元件](docs/img/material.png)
+![材質元件](docs/img/widgets-material-v2.png)
 
 ## 檔案
 | 檔 | 用途 |

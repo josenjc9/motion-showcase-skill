@@ -17,6 +17,7 @@ const probe={ // 每個欄位傳入的值，檢查是否出現（用文字或數
 MS.list().forEach(c=>{
   try{n++;const h0=MS.render(c.id,0.5);if(h0.length<50)bad.push(c.id+' 預設畫面空白')}catch(e){bad.push(c.id+' 預設出錯 '+e.message)}
   if(!c.dataReady)return;
+  if(window.WDATA&&WDATA[c.id])return; // 外部登記的元件改走下面的通用檢查
   const p=probe[c.id];if(!p){bad.push(c.id+' 沒有測試值');return}
   Object.keys(p).forEach(k=>{
     if(k==='_want')return;

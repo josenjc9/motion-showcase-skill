@@ -50,6 +50,11 @@ MS.list().forEach((c,i)=>{if(i<24||!c.dataReady)return;
   if(!Object.keys(c.fields).length)bad.push(c.id+' 標示可接數據但沒有任何欄位');
   if(Object.keys(c.fields).length<2)bad.push(c.id+' 欄位少於 2 個');
 });
+// 型態不對要退回預設、不能畫壞（前 24 個元件）
+['heart-rate','render-ring','trend-line','mixer-eq','live-score'].forEach(id=>{n++;try{
+  const bad1=MS.render(id,0.5,{value:'abc',series:'x',levels:5,homeScore:'zz'}),ok=MS.render(id,0.5);
+  if(/NaN|undefined/.test(bad1))bad.push(id+' 傳錯型態畫面出現 NaN／undefined')}catch(e){bad.push(id+' 傳錯型態出錯 '+e.message)}});
+n++;{const s=strip(MS.render('heart-rate',0.5,{value:'73'}));if(!s.includes('73'))bad.push('數字字串 73 沒顯示')}
 // mount／update：掛進頁面、換數據、數字要平順過渡到新值
 const holder=document.getElementById('box');const m=MS.mount(holder,'heart-rate',{value:60},{duration:200});
 n++;if(!holder.textContent.includes('60'))bad.push('mount 沒顯示初始數據 60');

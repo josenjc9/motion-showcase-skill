@@ -8,7 +8,7 @@ description: 使用現有 lib/ 將動態元件放進網頁、更新數據，或�
 ## 先確認要做什麼
 
 - **只看效果：** 引導使用者下載並解壓縮專案，用 Chrome 開啟 `gallery.html`。
-- **放進網頁：** 先讀 `README.md` 的完整 HTML，再依 `catalog.md` 選元件與欄位。
+- **放進網頁：** 先讀 `docs/first-widget.md` 的完整 HTML，再依 `catalog.md` 選元件與欄位。
 - **更新資料：** 參考 `docs/tutorial.md`，沿用已建立元件的 `update()`。
 - **影片素材或轉場：** 查看 `demo.html`、`lib/motion.js`；不要承諾此專案能直接輸出 MP4。
 
@@ -17,7 +17,7 @@ description: 使用現有 lib/ 將動態元件放進網頁、更新數據，或�
 使用者安裝本 skill 後，先定位本 `SKILL.md` 所在的目錄。以下 `README.md`、`catalog.md`、`lib/`、`docs/` 等路徑都**相對於 skill 目錄**，不是使用者目前的專案目錄。
 
 1. 確認 `lib/ms.js`、`lib/ms.css` 與元件檔案齊全。若只有 `SKILL.md`，引導使用者依 `docs/install.md` 安裝整包，不自行下載並執行未知安裝腳本。
-2. 讀取 skill 目錄的 README 完整範例與 catalog；將需要的 `lib/` 複製到目標專案，再使用專案內的相對路徑。
+2. 讀取 skill 目錄的 `docs/first-widget.md` 完整範例與 `catalog.md`；將需要的 `lib/` 複製到目標專案，再使用專案內的相對路徑。
 3. 若目標已有同名檔案，先比較內容；不要默默覆寫。可建立獨立 demo 子目錄避開衝突。
 4. 使用者只說「試用」時，預設交付可直接開啟的 `motion-demo.html`：心率 88、進度環 30%，按鈕更新到 120 與 80%。不要先推給使用者一長串選擇題。
 
@@ -31,7 +31,7 @@ description: 使用現有 lib/ 將動態元件放進網頁、更新數據，或�
 4. 從 `catalog.md` 確認元件 id、欄位名稱、型態、數值範圍與索引起點。
 5. 更新資料時呼叫 `update()`；移除頁面或元件時呼叫 `destroy()`。
 
-以下是局部示意，不是完整 HTML；給新手交付時請提供 README 那樣的完整檔案：
+以下是局部示意，不是完整 HTML；給新手交付時請提供 `docs/first-widget.md` 那樣的完整檔案：
 
 ```html
 <div id="heart" style="width:250px"></div>

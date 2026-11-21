@@ -54,9 +54,9 @@ npx skills add josenjc9/motion-showcase-skill --skill motion-showcase -a claude-
 ### 進階元件
 ![進階類：24 個元件預覽](docs/img/widgets-advanced-v2.png)
 
-### 解說用資訊圖卡
-講到哪、圖卡就長到哪：用 `step` 控制長到第幾步（沒傳才自己循環）。
-![解說用資訊圖卡：8 個元件預覽](docs/img/widgets-infocard-v2.png)
+### 解說型動態元件
+講到哪、元件就長到哪：用 `step` 控制長到第幾步（沒傳才自己循環）。
+![解說型動態元件：8 個元件預覽](docs/img/widgets-infocard-v2.png)
 
 [安裝排錯](docs/install.md) · [元件目錄](catalog.md) · [手動寫 HTML](docs/first-widget.md) · [操作教學](docs/tutorial.md)
 

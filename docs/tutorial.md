@@ -51,7 +51,15 @@ ws.onmessage = e => {
 - `hr.destroy()`：移除元件。
 - `MS.render('heart-rate', 1.5, { value: 88 })`：回傳第 1.5 秒的畫面（HTML 文字），給截圖、做影片或伺服器端用。
 
-## 5. 傳錯會怎樣
+## 5. 解說圖卡：講到哪、長到哪
+解說用的資訊圖卡（標題面板、循環飛輪圖、前後對照卡、雙欄對比卡、內容產線條、渲染佇列卡、里程碑計數卡、結尾品牌卡）用 `step` 控制長到第幾步：
+```js
+const fw = MS.mount('#fw', 'flywheel', { nodes: [{label:'聽',sub:'收訊號'}, {label:'寫',sub:'出草稿'}], step: 0 });
+fw.update({ step: 2 });   // 兩個節點依序長出
+```
+沒傳 `step` 才會自己循環示範。字幕關鍵詞標色：`highlightWords('講邊緣運算', ['邊緣運算'], 'sage')`。範例看 `examples/web-demo.html` 下半部。
+
+## 5b. 傳錯會怎樣
 - 數字欄位傳數字字串（例如 `"1088"`）也行。
 - 傳進來的值轉不成數字、或清單格式不對，元件會退回預設內容，不會畫壞。
 - 欄位名稱打錯不會報錯，只是沒效果，對照 `catalog.md` 檢查。
@@ -61,7 +69,7 @@ ws.onmessage = e => {
 
 ## 7. 檢查
 - `selftest.html`：最後一行 `RESULT: PASS` 表示每個元件與效果都能顯示。
-- `datatest.html`：最後一行 `RESULT: PASS` 表示 72 個元件傳進去的值都會顯示出來。
+- `datatest.html`：最後一行 `RESULT: PASS` 表示 80 個元件傳進去的值都會顯示出來。
 
 ## 8. 卡住時
 - 畫面是空的：確認 `ms.css` 有載入、script 順序正確。

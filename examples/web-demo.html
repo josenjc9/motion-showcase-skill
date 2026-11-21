@@ -29,6 +29,13 @@ button{font:inherit;padding:8px 14px;border-radius:10px;border:0;background:#2b7
   <div class="box"><div id="tog"></div><button id="flip">切換第一個開關</button></div>
 </div>
 
+<h2 style="font-size:18px;margin:28px 0 6px">講到哪、圖卡就長到哪</h2>
+<p>解說用的資訊圖卡由 <code>step</code> 決定長到第幾步。拖動滑桿就像講者講到不同段落，三張圖卡一起往下長（實際使用時由你的剪輯或播放程式傳入）。</p>
+<div class="box" style="margin-bottom:12px"><label>講到第幾步 <input id="stepIn" type="range" min="0" max="5" step="0.05" value="0"><b id="stepV">0</b></label></div>
+<div class="row">
+  <div id="ic1"></div><div id="ic2"></div><div id="ic3"></div>
+</div>
+
 <h2 style="font-size:18px">程式碼</h2>
 <pre>&lt;link rel="stylesheet" href="lib/ms.css"&gt;
 &lt;script src="lib/widgets.js"&gt;&lt;/script&gt;  &lt;!-- widgets2.js、widgets3.js、widgets-all.js、names.js、ms.js 依序載入 --&gt;
@@ -54,4 +61,11 @@ bind('rg','rgV',v=>ring.update({value:v}));
 let cur=1;$('next').onclick=()=>{cur=(cur+1)%4;steps.update({current:cur})};
 let on0=true;$('flip').onclick=()=>{on0=!on0;tog.update({items:[{label:'通知',on:on0},{label:'自動儲存',on:false},{label:'深色模式',on:true}]})};
 setInterval(()=>{series.push(Math.round(series[series.length-1]+(Math.random()*8-3)));if(series.length>12)series.shift();line.update({series:[...series],value:series[series.length-1]},{animate:false})},2000);
+
+const nodes=[{label:'聽',sub:'收訊號'},{label:'寫',sub:'出草稿'},{label:'查',sub:'做檢查'},{label:'效',sub:'看成效'}];
+const f1=MS.mount('#ic1','flywheel',{nodes,title:'內容循環',step:0},{duration:250});
+const f2=MS.mount('#ic2','before-after',{left:{title:'原本做法',desc:'人工逐步整理',icon:'document'},right:{title:'新做法',desc:'自動整理成圖',icon:'chip'},badge:'全新做法',step:0},{duration:250});
+const f3=MS.mount('#ic3','milestone-counter',{value:200000,suffix:'+',label:'累積顧客',segments:10,chip:'NT$ 270',step:0},{duration:250});
+$('stepIn').addEventListener('input',e=>{const s=+e.target.value;$('stepV').textContent=s.toFixed(1);
+  f1.update({step:s});f2.update({step:Math.min(3,s*0.6)});f3.update({step:Math.max(0,Math.min(1,(s-1)/4))})});
 </script>

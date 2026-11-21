@@ -17,7 +17,6 @@ my-page/
     ├── widgets.js
     ├── widgets2.js
     ├── widgets3.js
-    ├── widgets5.js
     ├── widgets-all.js
     ├── names.js
     ├── ms.js
@@ -46,7 +45,6 @@ my-page/
   <script src="lib/widgets.js"></script>
   <script src="lib/widgets2.js"></script>
   <script src="lib/widgets3.js"></script>
-  <script src="lib/widgets5.js"></script>
   <script src="lib/widgets-all.js"></script>
   <script src="lib/names.js"></script>
   <script src="lib/ms.js"></script>
@@ -72,7 +70,7 @@ my-page/
 
 ## 換成你需要的元件
 
-先從常見用途挑，不用一次翻完 80 個：
+先從常見用途挑，不用一次翻完 72 個：
 
 | 想呈現什麼 | 元件 id | 主要資料欄位 |
 |---|---|---|

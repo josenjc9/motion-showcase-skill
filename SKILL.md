@@ -1,6 +1,6 @@
 ---
 name: motion-showcase
-description: 使用現有 lib/ 將動態元件放進網頁、更新數據，或預覽影片元件與轉場效果時使用。含 80 個可接資料的元件；不提供 API 自動串接或一鍵影片匯出。
+description: 使用現有 lib/ 將動態元件放進網頁、更新數據，或預覽影片元件與轉場效果時使用。含 72 個可接資料的元件；不提供 API 自動串接或一鍵影片匯出。
 ---
 
 # motion-showcase｜AI 操作指南
@@ -26,7 +26,7 @@ description: 使用現有 lib/ 將動態元件放進網頁、更新數據，或�
 ## 網頁整合步驟
 
 1. 將完整 `lib/` 複製到目標專案，確認 HTML 的相對路徑。
-2. 載入 `lib/ms.css`，依序載入 `lib/widgets.js`、`lib/widgets2.js`、`lib/widgets3.js`、`lib/widgets5.js`、`lib/widgets-all.js`、`lib/names.js`、`lib/ms.js`。
+2. 載入 `lib/ms.css`，依序載入 `lib/widgets.js`、`lib/widgets2.js`、`lib/widgets3.js`、`lib/widgets-all.js`、`lib/names.js`、`lib/ms.js`。
 3. 先建立有合理寬度的容器，再呼叫 `MS.mount()`。自己的 script 必須位於外部 script 後面。
 4. 從 `catalog.md` 確認元件 id、欄位名稱、型態、數值範圍與索引起點。
 5. 更新資料時呼叫 `update()`；移除頁面或元件時呼叫 `destroy()`。

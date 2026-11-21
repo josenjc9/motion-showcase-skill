@@ -20,7 +20,7 @@ h2{font-size:20px;margin:22px 0 4px}p.note{margin:0 0 12px;opacity:.65;font-size
 </style>
 <header><h1>motion-showcase 效果展示</h1><p class="sub">雙擊這個檔案就能看，每個效果都會自己動，下面都有名字。</p></header>
 <nav id="nav"></nav><div id="app"></div>
-<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets5.js"></script><script src="lib/widgets-all.js"></script><script src="lib/names.js"></script><script src="lib/ms.js"></script><script src="lib/motion.js"></script>
+<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets-all.js"></script><script src="lib/names.js"></script><script src="lib/ms.js"></script><script src="lib/motion.js"></script>
 <script>
 // 展示頁專用：用時間迴圈播放。效果本身只看時間 t，這裡只是讓 t 一直往前走。
 const ENAMES=ENTER.map(x=>x[0]),BNAMES=BREAK.map(x=>x[0]),ANAMES=ARR.map(x=>x[0]),CNAMES=CAMS.map(x=>x[0]);
@@ -35,7 +35,7 @@ const frame=(kind,i,t)=>{GT=t;html='';
  else{const n=TKEYS[i],L=1.6,p=c01(((t%L)-.3)/.8);const A=cap(()=>{cream();P(wg(1,t,{x:WX,y:WY,w:760}))}),B=cap(()=>{cream();P(wg(9,t,{x:WX,y:WY,w:760}))});P(TRX[n](A,B,p))}
  return html};
 const groups=[
- ['widget','動態元件','會動的小卡片，全部可接數據',MS.list().map((c,i)=>[c.name+(c.dataReady?'　●可接數據':''),i]),'wide'],
+ ['widget','動態元件','會動的小卡片，72 個',MS.list().map((c,i)=>[c.name+(c.dataReady?'　●可接數據':''),i]),'wide'],
  ['enter','進場','元件怎麼出現',ENAMES.map((n,i)=>[n,i])],
  ['break','破壞特效','元件怎麼被拆掉',BNAMES.map((n,i)=>[n,i])],
  ['arrange','排列','多個元件怎麼排',ANAMES.map((n,i)=>[n,i])],

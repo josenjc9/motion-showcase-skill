@@ -1,5 +1,5 @@
 <!doctype html><meta charset="utf-8"><title>datatest</title><link rel="stylesheet" href="lib/ms.css"><div id="box"></div><pre id="out"></pre>
-<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets5.js"></script><script src="lib/widgets-all.js"></script><script src="lib/names.js"></script><script src="lib/ms.js"></script><script src="tests/baseline.js"></script>
+<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets-all.js"></script><script src="lib/names.js"></script><script src="lib/ms.js"></script><script src="tests/baseline.js"></script>
 <script>
 // 數據檢查：每個「可接數據」的元件，傳入獨特的值，畫面 HTML 裡一定要出現那個值；不傳時要能正常顯示。
 const bad=[];let n=0;
@@ -36,32 +36,25 @@ MS.list().forEach(c=>{
 // 第 24 個以後的元件（由 Makima 補接數據）：通用檢查——每個欄位換成不同的值，畫面一定要跟預設不同；
 // 並且「什麼都不傳」的畫面要跟改動前的基準一致（tests/baseline-widgets-24-71.json），確認沒改壞原本的樣子。
 const hash=s=>{let x=5381;for(let i=0;i<s.length;i++)x=((x<<5)+x+s.charCodeAt(i))|0;return x>>>0};
-const COLS=['sage','clay','amber','lilac','cream','blue','green','red','coral','yellow','purple','pink','orange','teal','white'];
-// 產生一批「合法且跟範例不同」的候選值：物件遞迴換值、字串加字尾、數字加量、布林反轉、顏色用合法色名輪替
-const deepMap=(v,f)=>Array.isArray(v)?v.map(x=>deepMap(x,f)):(v&&typeof v==='object')?Object.fromEntries(Object.entries(v).map(([a,b])=>[a,deepMap(b,f)])):f(v);
-const candidates=(ex,k)=>{const out=[];
-  const z=v=>typeof v==='string'?v+'Z':typeof v==='number'?(v===0?7:(v+1)*3+1):typeof v==='boolean'?!v:v;
-  const col=(()=>{let i=0;return v=>typeof v==='string'?COLS[(COLS.indexOf(v)+1+i++)%COLS.length]:v})();
-  if(typeof ex==='number')out.push(ex===0?7:(ex+1)*3+1);
-  else if(typeof ex==='string'){out.push('ZZ'+k);COLS.forEach(c=>out.push(c))}
-  else if(typeof ex==='boolean')out.push(!ex);
-  else if(Array.isArray(ex)||(ex&&typeof ex==='object')){
-    out.push(deepMap(ex,z));
-    out.push(deepMap(ex,v=>typeof v==='string'?COLS[(COLS.indexOf(v)+1)%COLS.length]:v));
-    out.push(deepMap(ex,v=>typeof v==='number'?v+((Math.round(v*7)%3)+2)*5:v));
-    out.push(deepMap(ex,col));
-  }
-  return out.filter(v=>JSON.stringify(v)!==JSON.stringify(ex))};
-MS.list().forEach((c,i)=>{if(i<24||i>=72)return;n++;const want=window.BASELINE[c.id];if(!want){bad.push(c.id+' 沒有基準指紋');return}
+const variant=(ex,k)=>{if(typeof ex==='number')return ex===0?7:(ex+1)*3+1;if(typeof ex==='string')return 'ZZ'+k;
+  if(typeof ex==='boolean')return !ex;
+  if(Array.isArray(ex)){if(ex.every(v=>typeof v==='number'))return ex.map((v,i)=>v+((i%3)+2)*5);
+    if(ex.every(v=>typeof v==='string'))return ex.map(v=>v+'Z');
+    if(ex.every(v=>v&&typeof v==='object'))return ex.map(v=>Object.fromEntries(Object.entries(v).map(([a,b])=>[a,typeof b==='string'?b+'Z':typeof b==='number'?b+9:!b])))}
+  return ex};
+MS.list().forEach((c,i)=>{if(i<24)return;n++;const want=window.BASELINE[c.id];if(!want){bad.push(c.id+' 沒有基準指紋');return}
   const got=[0.4,1.3,2.2].map(t=>hash(MS.render(c.id,t)));if(JSON.stringify(got)!==JSON.stringify(want))bad.push(c.id+' 預設畫面跟改動前不一致')});
 MS.list().forEach((c,i)=>{if(i<24||!c.dataReady)return;
-  Object.keys(c.fields).forEach(k=>{n++;try{const ex=c.fields[k].example,a=MS.render(c.id,1.0);
-    const cs=candidates(ex,k);let changed=false;
-    for(const v of cs){if(MS.render(c.id,1.0,{[k]:v})!==a){changed=true;break}}
-    if(!changed)bad.push(c.id+'.'+k+' 換值後畫面沒變（欄位可能沒接上，已試 '+cs.length+' 種合法值）')}catch(e){bad.push(c.id+'.'+k+' 出錯 '+e.message)}});
+  Object.keys(c.fields).forEach(k=>{n++;try{const ex=c.fields[k].example,v=variant(ex,k);
+    const a=MS.render(c.id,1.0),b=MS.render(c.id,1.0,{[k]:v});if(a===b)bad.push(c.id+'.'+k+' 換值後畫面沒變（欄位可能沒接上）')}catch(e){bad.push(c.id+'.'+k+' 出錯 '+e.message)}});
   if(!Object.keys(c.fields).length)bad.push(c.id+' 標示可接數據但沒有任何欄位');
   if(Object.keys(c.fields).length<2)bad.push(c.id+' 欄位少於 2 個');
 });
+// 型態不對要退回預設、不能畫壞（前 24 個元件）
+['heart-rate','render-ring','trend-line','mixer-eq','live-score'].forEach(id=>{n++;try{
+  const bad1=MS.render(id,0.5,{value:'abc',series:'x',levels:5,homeScore:'zz'}),ok=MS.render(id,0.5);
+  if(/NaN|undefined/.test(bad1))bad.push(id+' 傳錯型態畫面出現 NaN／undefined')}catch(e){bad.push(id+' 傳錯型態出錯 '+e.message)}});
+n++;{const s=strip(MS.render('heart-rate',0.5,{value:'73'}));if(!s.includes('73'))bad.push('數字字串 73 沒顯示')}
 // mount／update：掛進頁面、換數據、數字要平順過渡到新值
 const holder=document.getElementById('box');const m=MS.mount(holder,'heart-rate',{value:60},{duration:200});
 n++;if(!holder.textContent.includes('60'))bad.push('mount 沒顯示初始數據 60');

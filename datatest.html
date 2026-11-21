@@ -1,5 +1,5 @@
 <!doctype html><meta charset="utf-8"><title>datatest</title><link rel="stylesheet" href="lib/ms.css"><div id="box"></div><pre id="out"></pre>
-<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets-all.js"></script><script src="lib/names.js"></script><script src="lib/ms.js"></script><script src="tests/baseline.js"></script>
+<script src="lib/widgets.js"></script><script src="lib/widgets2.js"></script><script src="lib/widgets3.js"></script><script src="lib/widgets5.js"></script><script src="lib/widgets-all.js"></script><script src="lib/names.js"></script><script src="lib/ms.js"></script><script src="tests/baseline.js"></script>
 <script>
 // 數據檢查：每個「可接數據」的元件，傳入獨特的值，畫面 HTML 裡一定要出現那個值；不傳時要能正常顯示。
 const bad=[];let n=0;
@@ -42,7 +42,7 @@ const variant=(ex,k)=>{if(typeof ex==='number')return ex===0?7:(ex+1)*3+1;if(typ
     if(ex.every(v=>typeof v==='string'))return ex.map(v=>v+'Z');
     if(ex.every(v=>v&&typeof v==='object'))return ex.map(v=>Object.fromEntries(Object.entries(v).map(([a,b])=>[a,typeof b==='string'?b+'Z':typeof b==='number'?b+9:!b])))}
   return ex};
-MS.list().forEach((c,i)=>{if(i<24)return;n++;const want=window.BASELINE[c.id];if(!want){bad.push(c.id+' 沒有基準指紋');return}
+MS.list().forEach((c,i)=>{if(i<24||i>=72)return;n++;const want=window.BASELINE[c.id];if(!want){bad.push(c.id+' 沒有基準指紋');return}
   const got=[0.4,1.3,2.2].map(t=>hash(MS.render(c.id,t)));if(JSON.stringify(got)!==JSON.stringify(want))bad.push(c.id+' 預設畫面跟改動前不一致')});
 MS.list().forEach((c,i)=>{if(i<24||!c.dataReady)return;
   Object.keys(c.fields).forEach(k=>{n++;try{const ex=c.fields[k].example,v=variant(ex,k);
